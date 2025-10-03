@@ -1,0 +1,39 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch name
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Build ARMS application
+        run: |
+          javac src/Arms/*.java -d out/Arms
+          cp lib/mysql-connector-j-8.3.0.jar out/Arms  # Copy required dependencies
+        working-directory: ${{ github.workspace }}
+
+      - name: Build Arms_Load application
+        run: |
+          javac src/Arms_Load/*.java -d out/Arms_Load
+          cp lib/mysql-connector-j-8.3.0.jar out/Arms_Load  # Copy required dependencies
+        working-directory: ${{ github.workspace }}
+
+      - name: Run ARMS application
+        run: java -cp out/Arms:lib/mysql-connector-j-8.3.0.jar Arms.ARMS
+        working-directory: ${{ github.workspace }}
+
+      - name: Run Arms_Load application
+        run: java -cp out/Arms_Load:lib/mysql-connector-j-8.3.0.jar Arms_Load.LoadCSV
+        working-directory: ${{ github.workspace }}

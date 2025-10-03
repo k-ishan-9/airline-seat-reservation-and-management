@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "java",
+            "name": "Debug (Launch Current File)",
+            "request": "launch",
+            "mainClass": "Arms.ARMS",
+            "console": "internalConsole",
+            "projectName": "project",
+            "cwd": "${workspaceFolder}/out",
+            "classpath": [
+                "${workspaceFolder}/out",
+                "${workspaceFolder}/lib/mysql-connector-j-8.3.0.jar"
+            ]
+        }
+    ]
+}

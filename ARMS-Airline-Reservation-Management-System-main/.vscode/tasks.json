@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "javac",
+            "args": [
+                "-d",
+                "out",
+                "-cp",
+                ".:lib/mysql-connector-j-8.3.0.jar",
+                "src/Arms/*.java",
+                "src/Arms_Load/*.java"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Java Application",
+            "type": "shell",
+            "command": "java",
+            "args": [
+                "-cp",
+                "out:lib/mysql-connector-j-8.3.0.jar",
+                "Arms.ARMS"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": "compile",
+            "problemMatcher": []
+        }
+    ]
+}
