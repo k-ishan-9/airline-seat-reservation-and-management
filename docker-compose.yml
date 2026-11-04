@@ -1,0 +1,35 @@
+# Start MySQL only:            docker compose up -d mysql
+# Run the console app in Docker: docker compose run --rm app
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: arms
+      MYSQL_USER: arms
+      MYSQL_PASSWORD: arms_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    profiles: ["app"]        # not started by "docker compose up"; run it with "docker compose run --rm app"
+    stdin_open: true
+    tty: true
+    environment:
+      ARMS_DB_URL: jdbc:mysql://mysql:3306/arms?allowPublicKeyRetrieval=true&useSSL=false
+      ARMS_DB_USER: arms
+      ARMS_DB_PASSWORD: arms_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
